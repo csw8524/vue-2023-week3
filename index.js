@@ -3,9 +3,16 @@ import {createApp, onMounted, ref} from 'https://unpkg.com/vue@3/dist/vue.esm-br
 const URL = 'https://ec-course-api.hexschool.io/v2'
 const PATH = 'ryann'
 
+
 createApp({
   setup() {
     const products = ref([])
+    const productModalRef = ref(null)
+    const delProductModalRef = ref(null)
+    const isEdit = ref(false)
+    const tempProduct = ref({})
+    let productModal
+    let delProductModal
 
     const checkLogin = async () => {
       try {
@@ -33,19 +40,31 @@ createApp({
         alert(err.response.data.message)
       }
     }
-    // TODO 新增商品
-    const createProduct = () => {
-      // TODO 跳出新增視窗
-      console.log('create button')
+    const openModal = (mode, item = {}) => {
+      tempProduct.value = {...item}
+      console.log(tempProduct.value)
+      if (mode === 'create') {
+        isEdit.value = false
+        productModal.show()
+      } else if (mode === 'edit') {
+        isEdit.value = true
+        productModal.show()
+      } else if (mode === 'delete') {
+        delProductModal.show()
+      }
     }
-    // TODO 編輯商品
-    const editProduct = () => {
-      // TODO 跳出編輯視窗
-      console.log('edit button')
+    // TODO 新增商品、編輯商品 利用 isEdit 判斷模式
+    const submitProduct = () => {
+      if (isEdit.value) {
+        console.log('edit button')
+        console.log(tempProduct.value)
+      } else {
+        console.log('create button')
+        console.log(tempProduct.value)
+      }
     }
     // TODO 刪除商品
     const deleteProduct = () => {
-      // TODO 跳出確認刪除視窗
       console.log('delete button')
     }
  
@@ -53,6 +72,15 @@ createApp({
       try {
         await checkLogin()
         await getProducts()
+
+        productModal = new bootstrap.Modal(productModalRef.value, {
+          keyboard: false,
+          backdrop: 'static'
+        })
+        delProductModal = new bootstrap.Modal(delProductModalRef.value, {
+          keyboard: false,
+          backdrop: 'static'
+        })
       } catch (err) {
         console.error('出現未經處理的錯誤')
       }
@@ -60,9 +88,13 @@ createApp({
 
     return {
       products,
-      createProduct,
-      editProduct,
-      deleteProduct
+      productModalRef,
+      delProductModalRef,
+      isEdit,
+      tempProduct,
+      openModal,
+      submitProduct,
+      deleteProduct,
     }
   }
 }).mount('#app')
