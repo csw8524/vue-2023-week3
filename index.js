@@ -59,14 +59,15 @@ createApp({
     // 新增商品、編輯商品 利用 isEdit 判斷模式
     const submitProduct = async () => {
       try {
+        let res
         if (isEdit.value) {
-          const res = await axios.put(`${URL}/api/${PATH}/admin/product/${tempProduct.value.id}`, {data: tempProduct.value})
+          res = await axios.put(`${URL}/api/${PATH}/admin/product/${tempProduct.value.id}`, {data: tempProduct.value})
            alert(res.data.message)
         } else {
-          const res = await axios.post(`${URL}/api/${PATH}/admin/product`, {data: tempProduct.value})
-           alert(res.data.message)
+          res = await axios.post(`${URL}/api/${PATH}/admin/product`, {data: tempProduct.value})
         }
         getProducts()
+        alert(res.data.message)
       } catch (err) {
         alert(err.response.data.message)
       } finally {
@@ -78,8 +79,8 @@ createApp({
     const deleteProduct = async () => {
       try {
         const res = await axios.delete(`${URL}/api/${PATH}/admin/product/${tempProduct.value.id}`)
-        alert(res.data.message)
         getProducts()
+        alert(res.data.message)
       } catch (err) {
         alert(err.response.data.message)
       } finally {
