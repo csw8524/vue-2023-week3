@@ -10,7 +10,9 @@ createApp({
     const productModalRef = ref(null)
     const delProductModalRef = ref(null)
     const isEdit = ref(false)
-    const tempProduct = ref({})
+    const tempProduct = ref({
+      imagesUrl: []
+    })
     let productModal
     let delProductModal
 
@@ -41,7 +43,10 @@ createApp({
       }
     }
     const openModal = (mode, item = {}) => {
-      tempProduct.value = {...item}
+      tempProduct.value = {
+        ...tempProduct.value,
+        ...item
+      }
       console.log(tempProduct.value)
       if (mode === 'create') {
         isEdit.value = false
