@@ -59,14 +59,26 @@ createApp({
       }
     }
     // TODO 新增商品、編輯商品 利用 isEdit 判斷模式
-    const submitProduct = () => {
-      if (isEdit.value) {
-        console.log('edit button')
-        console.log(tempProduct.value)
-      } else {
-        console.log('create button')
-        console.log(tempProduct.value)
+    const submitProduct = async () => {
+      try {
+        if (isEdit.value) {
+          console.log('edit button')
+          console.log(tempProduct.value)
+          const res = await axios.put(`${URL}/api/${PATH}/admin/product/${tempProduct.value.id}`, {data: tempProduct.value})
+          console.log(res)
+        } else {
+          console.log('create button')
+          console.log(tempProduct.value)
+          const res = await axios.post(`${URL}/api/${PATH}/admin/product`, {data: tempProduct.value})
+          console.log(res)
+        }
+      } catch (error) {
+        console.dir(error)
+      } finally {
+        productModal.hide()
+        location.reload()
       }
+
     }
     // TODO 刪除商品
     const deleteProduct = () => {
