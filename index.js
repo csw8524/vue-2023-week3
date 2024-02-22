@@ -22,11 +22,9 @@ createApp({
           /(?:(?:^|.*;\s*)hexToken\s*\=\s*([^;]*).*$)|^.*$/,
           "$1",
         )
-        console.log(token)
         axios.defaults.headers.common['Authorization'] = token
 
-        const res = await axios.post(`${URL}/api/user/check`)
-        console.log(res.data)
+        await axios.post(`${URL}/api/user/check`)
       } catch(err) {
         alert(err.response.data.message)
         window.location = 'login.html'
@@ -36,7 +34,7 @@ createApp({
     const getProducts = async () => {
       try {
         const res = await axios.get(`${URL}/api/${PATH}/admin/products`)
-        console.log(res)
+
         products.value = res.data.products
       } catch(err) {
         alert(err.response.data.message)
@@ -44,10 +42,10 @@ createApp({
     }
     const openModal = (mode, item = {}) => {
       tempProduct.value = {
-        ...tempProduct.value,
+        imagesUrl: [],
         ...item
       }
-      console.log(tempProduct.value)
+
       if (mode === 'create') {
         isEdit.value = false
         productModal.show()
@@ -58,40 +56,34 @@ createApp({
         delProductModal.show()
       }
     }
-    // TODO 新增商品、編輯商品 利用 isEdit 判斷模式
+    // 新增商品、編輯商品 利用 isEdit 判斷模式
     const submitProduct = async () => {
       try {
         if (isEdit.value) {
-          console.log('edit button')
-          console.log(tempProduct.value)
           const res = await axios.put(`${URL}/api/${PATH}/admin/product/${tempProduct.value.id}`, {data: tempProduct.value})
-          console.log(res)
+           alert(res.data.message)
         } else {
-          console.log('create button')
-          console.log(tempProduct.value)
           const res = await axios.post(`${URL}/api/${PATH}/admin/product`, {data: tempProduct.value})
-          console.log(res)
+           alert(res.data.message)
         }
-      } catch (error) {
-        console.dir(error)
+        getProducts()
+      } catch (err) {
+        alert(err.response.data.message)
       } finally {
         productModal.hide()
-        location.reload()
       }
 
     }
     // 刪除商品
     const deleteProduct = async () => {
       try {
-        console.log('delete button')
-        console.log(tempProduct.value)
         const res = await axios.delete(`${URL}/api/${PATH}/admin/product/${tempProduct.value.id}`)
-        console.log(res)
-      } catch (error) {
-        console.dir(error)
+        alert(res.data.message)
+        getProducts()
+      } catch (err) {
+        alert(err.response.data.message)
       } finally {
         delProductModal.hide()
-        location.reload()
       }
     }
  
@@ -109,7 +101,7 @@ createApp({
           backdrop: 'static'
         })
       } catch (err) {
-        console.error('出現未經處理的錯誤')
+        alert('出現未經處理的錯誤')
       }
     })
 
