@@ -195,13 +195,13 @@
             </div>
             <div class="modal-body">
               是否刪除
-              <strong class="text-danger"></strong> 商品(刪除後將無法恢復)。
+              <strong class="text-danger">{{tempProduct.title}}</strong> (刪除後將無法恢復)。
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                 取消
               </button>
-              <button type="button" class="btn btn-danger">
+              <button @click="deleteProduct()" type="button" class="btn btn-danger">
                 確認刪除
               </button>
             </div>

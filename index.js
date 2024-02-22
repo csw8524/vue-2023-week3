@@ -80,9 +80,19 @@ createApp({
       }
 
     }
-    // TODO 刪除商品
-    const deleteProduct = () => {
-      console.log('delete button')
+    // 刪除商品
+    const deleteProduct = async () => {
+      try {
+        console.log('delete button')
+        console.log(tempProduct.value)
+        const res = await axios.delete(`${URL}/api/${PATH}/admin/product/${tempProduct.value.id}`)
+        console.log(res)
+      } catch (error) {
+        console.dir(error)
+      } finally {
+        delProductModal.hide()
+        location.reload()
+      }
     }
  
     onMounted(async () => {
