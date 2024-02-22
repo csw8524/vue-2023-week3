@@ -16,13 +16,11 @@ const app = {
           username: email.value,
           password: password.value
         })
-        console.log(res)
   
         const { token, expired } = res.data
         document.cookie = `hexToken=${token}; expires=${new Date(expired)};`
         window.location= 'index.html'
       } catch(err) {
-        console.log(err)
         isFailed.value = true
         password.value = ''
       }
