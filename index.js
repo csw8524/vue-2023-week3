@@ -62,7 +62,6 @@ createApp({
         let res
         if (isEdit.value) {
           res = await axios.put(`${URL}/api/${PATH}/admin/product/${tempProduct.value.id}`, {data: tempProduct.value})
-           alert(res.data.message)
         } else {
           res = await axios.post(`${URL}/api/${PATH}/admin/product`, {data: tempProduct.value})
         }
